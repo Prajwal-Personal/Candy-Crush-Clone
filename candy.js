@@ -67,7 +67,7 @@ function dragDrop() {
 
 function dragEnd() {
     if (!currTile || !otherTile) return;
-    if(currTile.src.includes("blank") || otherTile.src.includes("blank")) return;
+    if (currTile.src.includes("blank") || otherTile.src.includes("blank")) return;
 
     let currCoords = currTile.id.split("-");
     let r1 = parseInt(currCoords[0]);
@@ -87,13 +87,74 @@ function dragEnd() {
 
     let currImg = currTile.src;
     let otherImg = otherTile.src;
+    let isBombSwap = currImg.includes("choco") || otherImg.includes("choco");
     currTile.src = otherImg;
     otherTile.src = currImg;
-    let validMove = checkCrush3() || checkCrush4() || checkCrush5();
+
+    let validMove = false;
+
+    if(isBombSwap) {
+        crush2(currImg, otherImg);
+        currTile.src = "./images/blank.png";
+        otherTile.src = "./images/blank.png";
+        validMove = true;
+    }
+
+    if(checkCrush5_bomb()) {
+        crush5_bomb();
+        validMove = true;
+    }
+
+    if(checkCrush5_wrapped()) {
+        crush5_wrapped();
+        validMove = true;
+    }
+
+    if(checkCrush4()) {
+        crush4();
+        validMove = true;
+    }
+
+    if(checkCrush3()) {
+        crush3();
+        validMove = true;
+    }
 
     if(!validMove) {
         currTile.src = currImg;
         otherTile.src = otherImg;
+    }
+
+    currTile = null;
+    otherTile = null;
+}
+
+function crush2(currImg, otherImg) {
+    if(!(currImg.includes("choco") || otherImg.includes("choco"))) return;
+    if(currImg.includes("choco") && otherImg.includes("choco")) {
+        boardReset();
+        return;
+    }
+    let targetColor;
+
+    if(currImg.includes("choco")) targetColor = otherImg;
+    else targetColor = currImg;
+
+    for(let r=0; r<rows; r++) {
+        for(let c=0; c<cols; c++) {
+            if(board[r][c].src == targetColor) {
+                board[r][c].src = "./images/blank.png";
+                score += 20;
+            }
+        }
+    }
+}
+
+function boardReset() {
+    for(let r=0; r<rows; r++) {
+        for(let c=0; c<cols; c++) {
+            board[r][c].src = "./images/" + randomCandy() + ".png";
+        }
     }
 }
 
@@ -182,6 +243,7 @@ function crush4() {
 }
 
 function crush5_bomb() {
+
     for(let r=0 ; r<rows ; r++) {
         for(let c=0 ; c<cols-4 ; c++) {
             let candy1 = board[r][c];
@@ -264,40 +326,7 @@ function checkCrush4() {
     return false;
 }
 
-function checkCrush5() {
-    for(let r=0 ; r<rows ; r++) {
-        for(let c=0 ; c<cols-4 ; c++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r][c+1];
-            let candy3 = board[r][c+2];
-            let candy4 = board[r][c+3];
-            let candy5 = board[r][c+4];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
-                candy4.src == candy5.src && 
-                !candy1.src.includes("blank")) {
-                return true;
-            }
-        }
-    }
-
-    for(let c=0 ; c<cols ; c++) {
-        for(let r=0 ; r<rows-4 ; r++) {
-            let candy1 = board[r][c];
-            let candy2 = board[r+1][c];
-            let candy3 = board[r+2][c];
-            let candy4 = board[r+3][c];
-            let candy5 = board[r+4][c];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
-                candy4.src == candy5.src && 
-                !candy1.src.includes("blank")) {
-                return true;
-            }
-        }
-    }
+function checkCrush5_wrapped() {
 
     for(let r=0 ; r<rows-2 ; r++) {
         for(let c=0 ; c<cols-2 ; c++) {
@@ -352,6 +381,44 @@ function checkCrush5() {
                 board[r+2][c].src == board[r+1][c+2].src &&
                 !board[r][c].src.includes("blank")
             ){
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function checkCrush5_bomb() {
+    for(let r=0 ; r<rows ; r++) {
+        for(let c=0 ; c<cols-4 ; c++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r][c+1];
+            let candy3 = board[r][c+2];
+            let candy4 = board[r][c+3];
+            let candy5 = board[r][c+4];
+            if(candy1.src == candy2.src && 
+                candy2.src == candy3.src && 
+                candy3.src == candy4.src &&
+                candy4.src == candy5.src && 
+                !candy1.src.includes("blank")) {
+                return true;
+            }
+        }
+    }
+
+    for(let c=0 ; c<cols ; c++) {
+        for(let r=0 ; r<rows-4 ; r++) {
+            let candy1 = board[r][c];
+            let candy2 = board[r+1][c];
+            let candy3 = board[r+2][c];
+            let candy4 = board[r+3][c];
+            let candy5 = board[r+4][c];
+            if(candy1.src == candy2.src && 
+                candy2.src == candy3.src && 
+                candy3.src == candy4.src &&
+                candy4.src == candy5.src && 
+                !candy1.src.includes("blank")) {
                 return true;
             }
         }
