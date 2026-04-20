@@ -172,19 +172,69 @@ function explodeSpecialCandy(candy) {
     let c = parseInt(coords[1]);
 
     if(candy.src.includes("Striped-Vertical")) {
-        //pass
+        board[r][c].src = "./images/blank.png";
+        for(let i = 0; i < rows; i++) {
+            if(!(board[i][c].src.includes("Striped-Vertical") || board[i][c].src.includes("Striped-Horizontal") || board[i][c].src.includes("Wrapped") || board[i][c].src.includes("choco"))) {
+                board[i][c].src = "./images/blank.png";
+                score += 10;
+            }
+        }
+        for(let i = 0; i < rows; i++) {
+            if(board[i][c].src.includes("Striped-Vertical") || board[i][c].src.includes("Striped-Horizontal") || board[i][c].src.includes("Wrapped") || board[i][c].src.includes("choco")) {
+                explodeSpecialCandy(board[i][c]);
+                score += 10;
+            }
+        }
     }
 
     else if(candy.src.includes("Striped-Horizontal")) {
-        //pass
-    }
-
-    else if(candy.src.includes("Wrapped")) {
-        //pass
+        board[r][c].src = "./images/blank.png";
+        for(let j = 0; j < cols; j++) {
+            if(!(board[r][j].src.includes("Striped-Vertical") || board[r][j].src.includes("Striped-Horizontal") || board[r][j].src.includes("Wrapped") || board[r][j].src.includes("choco"))) {
+                board[r][j].src = "./images/blank.png";
+                score += 10;
+            }
+        }
+        for(let j = 0; j < cols; j++) {
+            if(board[r][j].src.includes("Striped-Vertical") || board[r][j].src.includes("Striped-Horizontal") || board[r][j].src.includes("Wrapped") || board[r][j].src.includes("choco")) {
+                explodeSpecialCandy(board[r][j]);
+                score += 10;
+            }
+        }
     }
 
     else if(candy.src.includes("choco")) {
-        //pass
+        board[r][c].src = "./images/blank.png";
+        let target = randomCandy();
+        for (let i=0 ; i<rows; i++) {
+            for (let j=0 ; j<cols ; j++) {
+                if(board[i][j].src.includes(target)) {
+                    if(board[i][j].src.includes("Striped-Vertical") || board[i][j].src.includes("Striped-Horizontal") || board[i][j].src.includes("Wrapped") || board[i][j].src.includes("choco")) 
+                        explodeSpecialCandy(board[i][j]);
+                    else board[i][j].src = "./images/blank.png";
+                    score += 10;
+                }
+            }
+        }
+    }
+
+    else if(candy.src.includes("Wrapped")) {
+        board[r][c].src = "./images/blank.png";
+        for(let repeat = 0; repeat < 2; repeat++) {
+            for(let i = Math.max(0, r-1); i <= Math.min(r+1, 8); i++) {
+                for(let j = Math.max(0, c-1); j <= Math.min(c+1, 8); j++) {
+                    let target = board[i][j];
+                    if(target.src.includes("blank")) continue;
+                    if(target.src.includes("Striped-Vertical") || target.src.includes("Striped-Horizontal") || target.src.includes("Wrapped") || target.src.includes("choco")) {
+                        explodeSpecialCandy(target);
+                    } else {
+                        target.src = "./images/blank.png";
+                        score += 10;
+                    }
+                }
+            }
+        }
+
     }
 }
 
