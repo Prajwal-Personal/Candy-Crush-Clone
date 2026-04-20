@@ -166,19 +166,51 @@ function crushCandy() {
     document.getElementById("score").innerText = score;
 }
 
+function explodeSpecialCandy(candy) {
+    let coords = candy.id.split("-");
+    let r = parseInt(coords[0]);
+    let c = parseInt(coords[1]);
+
+    if(candy.src.includes("Striped-Vertical")) {
+        //pass
+    }
+
+    else if(candy.src.includes("Striped-Horizontal")) {
+        //pass
+    }
+
+    else if(candy.src.includes("Wrapped")) {
+        //pass
+    }
+
+    else if(candy.src.includes("choco")) {
+        //pass
+    }
+}
+
 function crush3() {
     for(let r=0 ; r<rows ; r++) {
         for(let c=0 ; c<cols-2 ; c++) {
             let candy1 = board[r][c];
             let candy2 = board[r][c+1];
             let candy3 = board[r][c+2];
-            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                candy1.src = "./images/blank.png";
-                candy2.src = "./images/blank.png";
-                candy3.src = "./images/blank.png";
+            if(getColor(candy1.src) == getColor(candy2.src) && 
+             getColor(candy2.src) == getColor(candy3.src) &&
+             !candy1.src.includes("blank")) {
+                if(candy1.src.includes("Striped-Vertical") || candy1.src.includes("Striped-Horizontal") || candy1.src.includes("Wrapped") || candy1.src.includes("choco")) {
+                    explodeSpecialCandy(candy1);
+                }
+                else candy1.src = "./images/blank.png";
+                if(candy2.src.includes("Striped-Vertical") || candy2.src.includes("Striped-Horizontal") || candy2.src.includes("Wrapped") || candy2.src.includes("choco")) {
+                    explodeSpecialCandy(candy2);
+                }
+                else candy2.src = "./images/blank.png";
+                if(candy3.src.includes("Striped-Vertical") || candy3.src.includes("Striped-Horizontal") || candy3.src.includes("Wrapped") || candy3.src.includes("choco")) {
+                    explodeSpecialCandy(candy3);
+                }
+                else candy3.src = "./images/blank.png";
                 score += 30;
             }
-            
         }
     }
 
@@ -187,10 +219,21 @@ function crush3() {
             let candy1 = board[r][c];
             let candy2 = board[r+1][c];
             let candy3 = board[r+2][c];
-            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                candy1.src = "./images/blank.png";
-                candy2.src = "./images/blank.png";
-                candy3.src = "./images/blank.png";
+            if(getColor(candy1.src) == getColor(candy2.src) && 
+             getColor(candy2.src) == getColor(candy3.src) &&
+             !candy1.src.includes("blank")) {
+                if(candy1.src.includes("Striped-Vertical") || candy1.src.includes("Striped-Horizontal") || candy1.src.includes("Wrapped") || candy1.src.includes("choco")) {
+                    explodeSpecialCandy(candy1);
+                }
+                else candy1.src = "./images/blank.png";
+                if(candy2.src.includes("Striped-Vertical") || candy2.src.includes("Striped-Horizontal") || candy2.src.includes("Wrapped") || candy2.src.includes("choco")) {
+                    explodeSpecialCandy(candy2);
+                }
+                else candy2.src = "./images/blank.png";
+                if(candy3.src.includes("Striped-Vertical") || candy3.src.includes("Striped-Horizontal") || candy3.src.includes("Wrapped") || candy3.src.includes("choco")) {
+                    explodeSpecialCandy(candy3);
+                }
+                else candy3.src = "./images/blank.png";
                 score += 30;
             }
         }
@@ -204,19 +247,29 @@ function crush4() {
             let candy2 = board[r][c+1];
             let candy3 = board[r][c+2];
             let candy4 = board[r][c+3];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
-                !candy1.src.includes("blank")) 
-                {
-                    let color = candy1.src.split("/").pop().split(".")[0];
-                    candy1.src = "./images/" + color + "-Striped-Vertical.png";
-                    candy2.src = "./images/blank.png";
-                    candy3.src = "./images/blank.png";
-                    candy4.src = "./images/blank.png";                   
-                    score += 50;
+            if(getColor(candy1.src) == getColor(candy2.src) && 
+            getColor(candy2.src) == getColor(candy3.src) &&
+            getColor(candy3.src) == getColor(candy4.src) &&
+             !candy1.src.includes("blank")) {
+                let color = candy1.src.split("/").pop().split(".")[0];
+                if(candy1.src.includes("Striped-Vertical") || candy1.src.includes("Striped-Horizontal") || candy1.src.includes("Wrapped") || candy1.src.includes("choco")) {
+                    explodeSpecialCandy(candy1);
                 }
-            
+                candy1.src = "./images/" + color + "-Striped-Vertical.png";
+                if(candy2.src.includes("Striped-Vertical") || candy2.src.includes("Striped-Horizontal") || candy2.src.includes("Wrapped") || candy2.src.includes("choco")) {
+                    explodeSpecialCandy(candy2);
+                }
+                else candy2.src = "./images/blank.png";
+                if(candy3.src.includes("Striped-Vertical") || candy3.src.includes("Striped-Horizontal") || candy3.src.includes("Wrapped") || candy3.src.includes("choco")) {
+                    explodeSpecialCandy(candy3);
+                }
+                else candy3.src = "./images/blank.png";
+                if(candy4.src.includes("Striped-Vertical") || candy4.src.includes("Striped-Horizontal") || candy4.src.includes("Wrapped") || candy4.src.includes("choco")) {
+                    explodeSpecialCandy(candy4);
+                }
+                else candy4.src = "./images/blank.png";
+                score += 50;
+            }
         }
     }
 
@@ -226,18 +279,29 @@ function crush4() {
             let candy2 = board[r+1][c];
             let candy3 = board[r+2][c];
             let candy4 = board[r+3][c];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
-                !candy1.src.includes("blank")) 
-                {
-                    let color = candy1.src.split("/").pop().split(".")[0];
-                    candy1.src = "./images/blank.png";
-                    candy2.src = "./images/blank.png";
-                    candy3.src = "./images/blank.png";
-                    candy4.src = "./images/" + color + "-Striped-Horizontal.png";
-                    score += 50;
+            if(getColor(candy1.src) == getColor(candy2.src) && 
+            getColor(candy2.src) == getColor(candy3.src) &&
+            getColor(candy3.src) == getColor(candy4.src) &&
+             !candy1.src.includes("blank")) {
+                let color = candy1.src.split("/").pop().split(".")[0];
+                if(candy1.src.includes("Striped-Vertical") || candy1.src.includes("Striped-Horizontal") || candy1.src.includes("Wrapped") || candy1.src.includes("choco")) {
+                    explodeSpecialCandy(candy1);
                 }
+                else candy1.src = "./images/blank.png";
+                if(candy2.src.includes("Striped-Vertical") || candy2.src.includes("Striped-Horizontal") || candy2.src.includes("Wrapped") || candy2.src.includes("choco")) {
+                    explodeSpecialCandy(candy2);
+                }
+                else candy2.src = "./images/blank.png";
+                if(candy3.src.includes("Striped-Vertical") || candy3.src.includes("Striped-Horizontal") || candy3.src.includes("Wrapped") || candy3.src.includes("choco")) {
+                    explodeSpecialCandy(candy3);
+                }
+                else candy3.src = "./images/blank.png";
+                if(candy4.src.includes("Striped-Vertical") || candy4.src.includes("Striped-Horizontal") || candy4.src.includes("Wrapped") || candy4.src.includes("choco")) {
+                    explodeSpecialCandy(candy4);
+                }
+                candy4.src = "./images/" + color + "-Striped-Horizontal.png";
+                score += 50;
+            }
         }
     }
 }
@@ -251,20 +315,34 @@ function crush5_bomb() {
             let candy3 = board[r][c+2];
             let candy4 = board[r][c+3];
             let candy5 = board[r][c+4];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
-                candy4.src == candy5.src &&
-                !candy1.src.includes("blank")) 
-                {
-                    candy1.src = "./images/choco.png";
-                    candy2.src = "./images/blank.png";
-                    candy3.src = "./images/blank.png";
-                    candy4.src = "./images/blank.png";      
-                    candy5.src = "./images/blank.png";             
-                    score += 80;
+            if(getColor(candy1.src) == getColor(candy2.src) && 
+            getColor(candy2.src) == getColor(candy3.src) &&
+            getColor(candy3.src) == getColor(candy4.src) &&
+            getColor(candy4.src) == getColor(candy5.src) &&
+            !candy1.src.includes("blank")) {
+                let color = candy1.src.split("/").pop().split(".")[0];
+                if(candy1.src.includes("Striped-Vertical") || candy1.src.includes("Striped-Horizontal") || candy1.src.includes("Wrapped") || candy1.src.includes("choco")) {
+                    explodeSpecialCandy(candy1);
                 }
-            
+                candy1.src = "./images/choco.png";
+                if(candy2.src.includes("Striped-Vertical") || candy2.src.includes("Striped-Horizontal") || candy2.src.includes("Wrapped") || candy2.src.includes("choco")) {
+                    explodeSpecialCandy(candy2);
+                }
+                else candy2.src = "./images/blank.png";
+                if(candy3.src.includes("Striped-Vertical") || candy3.src.includes("Striped-Horizontal") || candy3.src.includes("Wrapped") || candy3.src.includes("choco")) {
+                    explodeSpecialCandy(candy3);
+                }
+                else candy3.src = "./images/blank.png";
+                if(candy4.src.includes("Striped-Vertical") || candy4.src.includes("Striped-Horizontal") || candy4.src.includes("Wrapped") || candy4.src.includes("choco")) {
+                    explodeSpecialCandy(candy4);
+                }
+                else candy4.src = "./images/blank.png";
+                if(candy5.src.includes("Striped-Vertical") || candy5.src.includes("Striped-Horizontal") || candy5.src.includes("Wrapped") || candy5.src.includes("choco")) {
+                    explodeSpecialCandy(candy5);
+                }
+                else candy5.src = "./images/blank.png"
+                score += 50;
+            }
         }
     }
 
@@ -275,19 +353,34 @@ function crush5_bomb() {
             let candy3 = board[r+2][c];
             let candy4 = board[r+3][c];
             let candy5 = board[r+4][c];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
-                candy4.src == candy5.src &&
-                !candy1.src.includes("blank")) 
-                {
-                    candy1.src = "./images/blank.png";
-                    candy2.src = "./images/blank.png";
-                    candy3.src = "./images/blank.png";
-                    candy4.src = "./images/blank.png";
-                    candy5.src = "./images/choco.png";
-                    score += 80;
+            if(getColor(candy1.src) == getColor(candy2.src) && 
+            getColor(candy2.src) == getColor(candy3.src) &&
+            getColor(candy3.src) == getColor(candy4.src) &&
+            getColor(candy4.src) == getColor(candy5.src) &&
+            !candy1.src.includes("blank")) {
+                let color = candy1.src.split("/").pop().split(".")[0];
+                if(candy1.src.includes("Striped-Vertical") || candy1.src.includes("Striped-Horizontal") || candy1.src.includes("Wrapped") || candy1.src.includes("choco")) {
+                    explodeSpecialCandy(candy1);
                 }
+                else candy1.src = "./images/blank.png";
+                if(candy2.src.includes("Striped-Vertical") || candy2.src.includes("Striped-Horizontal") || candy2.src.includes("Wrapped") || candy2.src.includes("choco")) {
+                    explodeSpecialCandy(candy2);
+                }
+                else candy2.src = "./images/blank.png";
+                if(candy3.src.includes("Striped-Vertical") || candy3.src.includes("Striped-Horizontal") || candy3.src.includes("Wrapped") || candy3.src.includes("choco")) {
+                    explodeSpecialCandy(candy3);
+                }
+                else candy3.src = "./images/blank.png";
+                if(candy4.src.includes("Striped-Vertical") || candy4.src.includes("Striped-Horizontal") || candy4.src.includes("Wrapped") || candy4.src.includes("choco")) {
+                    explodeSpecialCandy(candy4);
+                }
+                else candy4.src = "./images/blank.png";
+                if(candy5.src.includes("Striped-Vertical") || candy5.src.includes("Striped-Horizontal") || candy5.src.includes("Wrapped") || candy5.src.includes("choco")) {
+                    explodeSpecialCandy(candy5);
+                }
+                candy5.src = "./images/choco.png"
+                score += 50;
+            }
         }
     }
 }
@@ -299,9 +392,9 @@ function checkCrush4() {
             let candy2 = board[r][c+1];
             let candy3 = board[r][c+2];
             let candy4 = board[r][c+3];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
+            if(getColor(candy1.src) == getColor(candy2.src) &&
+                getColor(candy2.src) == getColor(candy3.src) &&
+                getColor(candy3.src) == getColor(candy4.src) &&
                 !candy1.src.includes("blank")) {
                 return true;
             }
@@ -314,9 +407,9 @@ function checkCrush4() {
             let candy2 = board[r+1][c];
             let candy3 = board[r+2][c];
             let candy4 = board[r+3][c];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
+            if(getColor(candy1.src) == getColor(candy2.src) &&
+                getColor(candy2.src) == getColor(candy3.src) &&
+                getColor(candy3.src) == getColor(candy4.src) &&
                 !candy1.src.includes("blank")) {
                 return true;
             }
@@ -330,55 +423,55 @@ function checkCrush5_wrapped() {
 
     for(let r=0 ; r<rows-2 ; r++) {
         for(let c=0 ; c<cols-2 ; c++) {
-            if(board[r][c].src == board[r][c+1].src &&
-                board[r][c+1].src == board[r][c+2].src &&
-                board[r+1][c].src == board[r][c].src &&
-                board[r+2][c].src == board[r][c].src &&
+            if(getColor(board[r][c].src) == getColor(board[r][c+1].src) &&
+                getColor(board[r][c+1].src) == getColor(board[r][c+2].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r][c].src) &&
+                getColor(board[r+2][c].src) == getColor(board[r][c].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 return true;
             }
             
-            if(board[r][c].src == board[r+1][c].src &&
-                board[r+1][c].src == board[r+2][c].src &&
-                board[r+1][c+1].src == board[r][c].src &&
-                board[r+1][c+2].src == board[r][c].src &&
+            if(getColor(board[r][c].src) == getColor(board[r+1][c].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r+2][c].src) &&
+                getColor(board[r+1][c+1].src) == getColor(board[r][c].src) &&
+                getColor(board[r+1][c+2].src) == getColor(board[r][c].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 return true;
             }
 
-            if(board[r][c].src == board[r+1][c].src &&
-                board[r+1][c].src == board[r+2][c].src &&
-                board[r+2][c+1].src == board[r][c].src &&
-                board[r+2][c+2].src == board[r][c].src &&
+            if(getColor(board[r][c].src) == getColor(board[r+1][c].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r+2][c].src) &&
+                getColor(board[r+2][c+1].src) == getColor(board[r][c].src) &&
+                getColor(board[r+2][c+2].src) == getColor(board[r][c].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 return true;
             }
 
-            if(board[r][c].src == board[r][c+1].src &&
-                board[r][c].src == board[r][c+2].src &&
-                board[r+1][c+2].src == board[r][c].src &&
-                board[r+2][c+2].src == board[r][c].src &&
+            if(getColor(board[r][c].src) == getColor(board[r][c+1].src) &&
+                getColor(board[r][c].src) == getColor(board[r][c+2].src) &&
+                getColor(board[r+1][c+2].src) == getColor(board[r][c].src) &&
+                getColor(board[r+2][c+2].src) == getColor(board[r][c].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 return true;
             }
 
-            if(board[r+1][c].src == board[r+1][c+1].src &&
-                board[r+1][c].src == board[r+1][c+2].src &&
-                board[r+1][c].src == board[r][c+2].src &&
-                board[r+1][c].src == board[r+2][c+2].src &&
+            if(getColor(board[r+1][c].src) == getColor(board[r+1][c+1].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r+1][c+2].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r][c+2].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r+2][c+2].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 return true;
             }
 
-            if(board[r+2][c].src == board[r+2][c+1].src &&
-                board[r+2][c].src == board[r+2][c+2].src &&
-                board[r+2][c].src == board[r][c+2].src &&
-                board[r+2][c].src == board[r+1][c+2].src &&
+            if(getColor(board[r+2][c].src) == getColor(board[r+2][c+1].src) &&
+                getColor(board[r+2][c].src) == getColor(board[r+2][c+2].src) &&
+                getColor(board[r+2][c].src) == getColor(board[r][c+2].src) &&
+                getColor(board[r+2][c].src) == getColor(board[r+1][c+2].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 return true;
@@ -397,10 +490,10 @@ function checkCrush5_bomb() {
             let candy3 = board[r][c+2];
             let candy4 = board[r][c+3];
             let candy5 = board[r][c+4];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
-                candy4.src == candy5.src && 
+            if(getColor(candy1.src) == getColor(candy2.src) && 
+                getColor(candy2.src) == getColor(candy3.src) && 
+                getColor(candy3.src) == getColor(candy4.src) &&
+                getColor(candy4.src) == getColor(candy5.src) && 
                 !candy1.src.includes("blank")) {
                 return true;
             }
@@ -414,10 +507,10 @@ function checkCrush5_bomb() {
             let candy3 = board[r+2][c];
             let candy4 = board[r+3][c];
             let candy5 = board[r+4][c];
-            if(candy1.src == candy2.src && 
-                candy2.src == candy3.src && 
-                candy3.src == candy4.src &&
-                candy4.src == candy5.src && 
+            if(getColor(candy1.src) == getColor(candy2.src) && 
+                getColor(candy2.src) == getColor(candy3.src) && 
+                getColor(candy3.src) == getColor(candy4.src) &&
+                getColor(candy4.src) == getColor(candy5.src) && 
                 !candy1.src.includes("blank")) {
                 return true;
             }
@@ -433,8 +526,10 @@ function checkCrush3() {
             let candy1 = board[r][c];
             let candy2 = board[r][c+1];
             let candy3 = board[r][c+2];
-            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                return true;
+            if(getColor(candy1.src) == getColor(candy2.src) &&
+                getColor(candy2.src) == getColor(candy3.src) &&
+                !candy1.src.includes("blank")) {
+                    return true;
             }
         }
     }
@@ -444,13 +539,20 @@ function checkCrush3() {
             let candy1 = board[r][c];
             let candy2 = board[r+1][c];
             let candy3 = board[r+2][c];
-            if(candy1.src == candy2.src && candy2.src == candy3.src && !candy1.src.includes("blank")) {
-                return true;
+            if(getColor(candy1.src) == getColor(candy2.src) &&
+                getColor(candy2.src) == getColor(candy3.src) &&
+                !candy1.src.includes("blank")) {
+                    return true;
             }
         }
     }
 
     return false;
+}
+
+function getColor(src) {
+    let file = src.split("/").pop().split(".")[0]; // Blue-Striped-Vertical
+    return file.split("-")[0]; // Blue
 }
 
 function gravity() {
@@ -473,33 +575,63 @@ function crush5_wrapped() {
 
     for(let r=0 ; r<rows-2 ; r++) {
         for(let c=0 ; c<cols-2 ; c++) {
-            if(board[r][c].src == board[r][c+1].src &&
-                board[r][c+1].src == board[r][c+2].src &&
-                board[r+1][c].src == board[r][c].src &&
-                board[r+2][c].src == board[r][c].src &&
+            if(getColor(board[r][c].src) == getColor(board[r][c+1].src) &&
+                getColor(board[r][c+1].src) == getColor(board[r][c+2].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r][c].src) &&
+                getColor(board[r+2][c].src) == getColor(board[r][c].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r][c].src.split("/").pop().split(".")[0];
+                if(board[r][c].src.includes("Striped-Vertical") || board[r][c].src.includes("Striped-Horizontal") || board[r][c].src.includes("Wrapped") || board[r][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c]);
+                }
                 board[r][c].src = "./images/" + color + "-Wrapped.png";
-                board[r][c+1].src = "./images/blank.png";
-                board[r][c+2].src = "./images/blank.png";
-                board[r+1][c].src = "./images/blank.png";
-                board[r+2][c].src = "./images/blank.png";
+                if(board[r][c+1].src.includes("Striped-Vertical") || board[r][c+1].src.includes("Striped-Horizontal") || board[r][c+1].src.includes("Wrapped") || board[r][c+1].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c+1]);
+                }
+                else board[r][c+1].src = "./images/blank.png";
+                if(board[r][c+2].src.includes("Striped-Vertical") || board[r][c+2].src.includes("Striped-Horizontal") || board[r][c+2].src.includes("Wrapped") || board[r][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c+2]);
+                }
+                else board[r][c+2].src = "./images/blank.png";
+                if(board[r+1][c].src.includes("Striped-Vertical") || board[r+1][c].src.includes("Striped-Horizontal") || board[r+1][c].src.includes("Wrapped") || board[r+1][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c]);
+                }
+                else board[r+1][c].src = "./images/blank.png";
+                if(board[r+2][c].src.includes("Striped-Vertical") || board[r+2][c].src.includes("Striped-Horizontal") || board[r+2][c].src.includes("Wrapped") || board[r+2][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c]);
+                }
+                else board[r+2][c].src = "./images/blank.png";
                 score += 100;
             }
             
-            if(board[r][c].src == board[r+1][c].src &&
-                board[r+1][c].src == board[r+2][c].src &&
-                board[r+1][c+1].src == board[r][c].src &&
-                board[r+1][c+2].src == board[r][c].src &&
+            if(getColor(board[r][c].src) == getColor(board[r+1][c].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r+2][c].src) &&
+                getColor(board[r+1][c+1].src) == getColor(board[r][c].src) &&
+                getColor(board[r+1][c+2].src) == getColor(board[r][c].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r+1][c].src.split("/").pop().split(".")[0];
-                board[r][c].src = "./images/blank.png"
+                if(board[r][c].src.includes("Striped-Vertical") || board[r][c].src.includes("Striped-Horizontal") || board[r][c].src.includes("Wrapped") || board[r][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c]);
+                }
+                else board[r][c].src = "./images/blank.png";
+                if(board[r+1][c].src.includes("Striped-Vertical") || board[r+1][c].src.includes("Striped-Horizontal") || board[r+1][c].src.includes("Wrapped") || board[r+1][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c]);
+                }
                 board[r+1][c].src = "./images/" + color + "-Wrapped.png";
-                board[r+2][c].src = "./images/blank.png";
-                board[r+1][c+1].src = "./images/blank.png"
-                board[r+1][c+2].src = "./images/blank.png";
+                if(board[r+2][c].src.includes("Striped-Vertical") || board[r+2][c].src.includes("Striped-Horizontal") || board[r+2][c].src.includes("Wrapped") || board[r+2][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c]);
+                }
+                else board[r+2][c].src = "./images/blank.png";
+                if(board[r+1][c+1].src.includes("Striped-Vertical") || board[r+1][c+1].src.includes("Striped-Horizontal") || board[r+1][c+1].src.includes("Wrapped") || board[r+1][c+1].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c+1]);
+                }
+                else board[r+1][c+1].src = "./images/blank.png";
+                if(board[r+1][c+2].src.includes("Striped-Vertical") || board[r+1][c+2].src.includes("Striped-Horizontal") || board[r+1][c+2].src.includes("Wrapped") || board[r+1][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c+2]);
+                }
+                else board[r+1][c+2].src = "./images/blank.png";
                 score += 100;
             }
 
@@ -510,11 +642,26 @@ function crush5_wrapped() {
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r+2][c].src.split("/").pop().split(".")[0];
-                board[r][c].src = "./images/blank.png"
-                board[r+1][c].src = "./images/blank.png";
+                if(board[r][c].src.includes("Striped-Vertical") || board[r][c].src.includes("Striped-Horizontal") || board[r][c].src.includes("Wrapped") || board[r][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c]);
+                }
+                else board[r][c].src = "./images/blank.png";
+                if(board[r+1][c].src.includes("Striped-Vertical") || board[r+1][c].src.includes("Striped-Horizontal") || board[r+1][c].src.includes("Wrapped") || board[r+1][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c]);
+                }
+                else board[r+1][c].src = "./images/blank.png";
+                if(board[r+2][c].src.includes("Striped-Vertical") || board[r+2][c].src.includes("Striped-Horizontal") || board[r+2][c].src.includes("Wrapped") || board[r+2][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c]);
+                }
                 board[r+2][c].src = "./images/" + color + "-Wrapped.png";
-                board[r+2][c+1].src = "./images/blank.png"
-                board[r+2][c+2].src = "./images/blank.png";
+                if(board[r+2][c+1].src.includes("Striped-Vertical") || board[r+2][c+1].src.includes("Striped-Horizontal") || board[r+2][c+1].src.includes("Wrapped") || board[r+2][c+1].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c+1]);
+                }
+                else board[r+2][c+1].src = "./images/blank.png";
+                if(board[r+2][c+2].src.includes("Striped-Vertical") || board[r+2][c+2].src.includes("Striped-Horizontal") || board[r+2][c+2].src.includes("Wrapped") || board[r+2][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c+2]);
+                }
+                else board[r+2][c+2].src = "./images/blank.png";
                 score += 100;
             }
 
@@ -525,11 +672,26 @@ function crush5_wrapped() {
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r][c+2].src.split("/").pop().split(".")[0];
+                if(board[r][c+2].src.includes("Striped-Vertical") || board[r][c+2].src.includes("Striped-Horizontal") || board[r][c+2].src.includes("Wrapped") || board[r][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c+2]);
+                }
                 board[r][c+2].src = "./images/" + color + "-Wrapped.png";
-                board[r+1][c+2].src = "./images/blank.png";
-                board[r+2][c+2].src = "./images/blank.png";
-                board[r][c].src = "./images/blank.png"
-                board[r][c+1].src = "./images/blank.png";
+                if (board[r+1][c+2].src.includes("Striped-Vertical") || board[r+1][c+2].src.includes("Striped-Horizontal") || board[r+1][c+2].src.includes("Wrapped") || board[r+1][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c+2]);
+                }
+                else board[r+1][c+2].src = "./images/blank.png";
+                if (board[r+2][c+2].src.includes("Striped-Vertical") || board[r+2][c+2].src.includes("Striped-Horizontal") || board[r+2][c+2].src.includes("Wrapped") || board[r+2][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c+2]);
+                }
+                else board[r+2][c+2].src = "./images/blank.png";
+                if (board[r][c].src.includes("Striped-Vertical") || board[r][c].src.includes("Striped-Horizontal") || board[r][c].src.includes("Wrapped") || board[r][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c]);
+                }
+                else board[r][c].src = "./images/blank.png";
+                if (board[r][c+1].src.includes("Striped-Vertical") || board[r][c+1].src.includes("Striped-Horizontal") || board[r][c+1].src.includes("Wrapped") || board[r][c+1].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c+1]);
+                }
+                else board[r][c+1].src = "./images/blank.png";
                 score += 100;
             }
 
@@ -540,11 +702,26 @@ function crush5_wrapped() {
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r+1][c+2].src.split("/").pop().split(".")[0];
-                board[r][c+2].src = "./images/blank.png"
-                board[r+1][c+2].src = "./images/" + color + "-Wrapped.png";
-                board[r+2][c+2].src = "./images/blank.png";
-                board[r+1][c].src = "./images/blank.png"
-                board[r+1][c+1].src = "./images/blank.png";
+                if (board[r][c+2].src.includes("Striped-Vertical") || board[r][c+2].src.includes("Striped-Horizontal") || board[r][c+2].src.includes("Wrapped") || board[r][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c+2]);
+                }
+                else board[r][c+2].src = "./images/blank.png";
+                if (board[r+1][c+2].src.includes("Striped-Vertical") || board[r+1][c+2].src.includes("Striped-Horizontal") || board[r+1][c+2].src.includes("Wrapped") || board[r+1][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c+2]);
+                }
+                else board[r+1][c+2].src = "./images/" + color + "-Wrapped.png";
+                if (board[r+2][c+2].src.includes("Striped-Vertical") || board[r+2][c+2].src.includes("Striped-Horizontal") || board[r+2][c+2].src.includes("Wrapped") || board[r+2][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c+2]);
+                }
+                else board[r+2][c+2].src = "./images/blank.png";
+                if (board[r+1][c].src.includes("Striped-Vertical") || board[r+1][c].src.includes("Striped-Horizontal") || board[r+1][c].src.includes("Wrapped") || board[r+1][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c]);
+                }
+                else board[r+1][c].src = "./images/blank.png";
+                if (board[r+1][c+1].src.includes("Striped-Vertical") || board[r+1][c+1].src.includes("Striped-Horizontal") || board[r+1][c+1].src.includes("Wrapped") || board[r+1][c+1].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c+1]);
+                }
+                else board[r+1][c+1].src = "./images/blank.png";
                 score += 100;
             }
 
@@ -555,11 +732,26 @@ function crush5_wrapped() {
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r+2][c+2].src.split("/").pop().split(".")[0];
-                board[r][c+2].src = "./images/blank.png"
-                board[r+1][c+2].src = "./images/blank.png";
+                if (board[r][c+2].src.includes("Striped-Vertical") || board[r][c+2].src.includes("Striped-Horizontal") || board[r][c+2].src.includes("Wrapped") || board[r][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r][c+2]);
+                }
+                else board[r][c+2].src = "./images/blank.png";
+                if (board[r+1][c+2].src.includes("Striped-Vertical") || board[r+1][c+2].src.includes("Striped-Horizontal") || board[r+1][c+2].src.includes("Wrapped") || board[r+1][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+1][c+2]);
+                }
+                else board[r+1][c+2].src = "./images/blank.png";
+                if (board[r+2][c+2].src.includes("Striped-Vertical") || board[r+2][c+2].src.includes("Striped-Horizontal") || board[r+2][c+2].src.includes("Wrapped") || board[r+2][c+2].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c+2]);
+                }
                 board[r+2][c+2].src = "./images/" + color + "-Wrapped.png";
-                board[r+2][c].src = "./images/blank.png"
-                board[r+2][c+1].src = "./images/blank.png";
+                if (board[r+2][c].src.includes("Striped-Vertical") || board[r+2][c].src.includes("Striped-Horizontal") || board[r+2][c].src.includes("Wrapped") || board[r+2][c].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c]);
+                }
+                else board[r+2][c].src = "./images/blank.png";
+                if (board[r+2][c+1].src.includes("Striped-Vertical") || board[r+2][c+1].src.includes("Striped-Horizontal") || board[r+2][c+1].src.includes("Wrapped") || board[r+2][c+1].src.includes("choco")) {
+                    explodeSpecialCandy(board[r+2][c+1]);
+                }
+                else board[r+2][c+1].src = "./images/blank.png";
                 score += 100;
             }
         }
