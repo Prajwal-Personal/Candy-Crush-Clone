@@ -138,25 +138,110 @@ function crush2(currImg, otherImg) {
         boardReset();
         return;
     }
-    let targetColor;
 
-    if(currImg.includes("choco")) targetColor = otherImg;
-    else if(otherImg.includes("choco")) targetColor = currImg;
+    if(currImg.includes("choco")) {
+        let targetColor = getColor(otherImg)
 
-    if(currImg.includes("choco") || otherImg.includes("choco")) {
-        for(let r=0; r<rows; r++) {
-            for(let c=0; c<cols; c++) {
-                if(board[r][c].src == targetColor) {
-                    board[r][c].src = "./images/blank.png";
-                    score += 200;
+        if(otherImg.includes("Striped")) {
+            let choices = ["Striped-Vertical", "Striped-Horizontal"];
+            for(let r=0 ; r<rows ; r++) {
+                for(let c=0 ; c<cols ; c++) {
+                    if(board[r][c].src.includes(targetColor)){
+                        board[r][c].src = "./images/" + targetColor + "-" + choices[Math.floor(Math.random() * choices.length)] + ".png";
+                    }
+                }
+            }
+            for(let r=0; r<rows; r++) {
+                for(let c=0; c<cols; c++) {
+                    if(board[r][c].src.includes(targetColor)) {
+                        explodeSpecialCandy(board[r][c]);
+                    }
+                }
+            }
+        }
+
+        else if (otherImg.includes("Wrapped")) {
+            for (let r=0 ; r<rows ; r++){
+                for(let c=0 ; c<cols ; c++) {
+                    if(board[r][c].src.includes(targetColor)){
+                        board[r][c].src = "./images/" + targetColor + "-Wrapped.png";
+                    }
+                }
+            }
+            for(let r=0; r<rows; r++) {
+                for(let c=0; c<cols; c++) {
+                    if(board[r][c].src.includes(targetColor)) {
+                        explodeSpecialCandy(board[r][c]);
+                    }
+                }
+            }
+        }
+
+        else{
+            for(let r=0; r<rows; r++) {
+                for(let c=0; c<cols; c++) {
+                    if(board[r][c].src.includes(targetColor)) {
+                        board[r][c].src = "./images/blank.png";
+                        score += 200;
+                    }
+                }
+            }
+        }
+    }
+
+    if(otherImg.includes("choco")) {
+        let targetColor = getColor(currImg);
+
+        if(currImg.includes("Striped")){
+            let choices = ["Striped-Vertical", "Striped-Horizontal"];
+            for(let r=0 ; r<rows ; r++) {
+                for(let c=0 ; c<cols ; c++) {
+                    if(board[r][c].src.includes(targetColor)){
+                        board[r][c].src = "./images/" + targetColor + "-" + choices[Math.floor(Math.random() * choices.length)] + ".png";
+                    }
+                }
+            }
+            for(let r=0; r<rows; r++) {
+                for(let c=0; c<cols; c++) {
+                    if(board[r][c].src.includes(targetColor)) {
+                        explodeSpecialCandy(board[r][c]);
+                    }
+                }
+            }
+        }
+
+        else if(currImg.includes("Wrapped")) {
+            for (let r=0 ; r<rows ; r++){
+                for(let c=0 ; c<cols ; c++) {
+                    if(board[r][c].src.includes(targetColor)){
+                        board[r][c].src = "./images/" + targetColor + "-Wrapped.png";
+                    }
+                }
+            }
+            for(let r=0; r<rows; r++) {
+                for(let c=0; c<cols; c++) {
+                    if(board[r][c].src.includes(targetColor)) {
+                        explodeSpecialCandy(board[r][c]);
+                    }
+                }
+            }
+        }
+
+        else{
+            for(let r=0; r<rows; r++) {
+                for(let c=0; c<cols; c++) {
+                    if(board[r][c].src.includes(targetColor)) {
+                        board[r][c].src = "./images/blank.png";
+                        score += 200;
+                    }
                 }
             }
         }
     }
 
     if(currImg.includes("Wrapped") && otherImg.includes("Wrapped")){
-        let r = parseInt(currTile.id.split("-")[0]);
-        let c = parseInt(currTile.id.split("-")[1]);
+        let r = parseInt(otherTile.id.split("-")[0]);
+        let c = parseInt(otherTile.id.split("-")[1]);
         for(let i = Math.max(0, r-2); i <= Math.min(r+2, 8); i++) {
             for(let j = Math.max(0, c-2); j <= Math.min(c+2, 8); j++) {
                 let target = board[i][j];
@@ -172,10 +257,10 @@ function crush2(currImg, otherImg) {
     }
 
     if(currImg.includes("Striped") && otherImg.includes("Striped")){
-        let r1 = parseInt(currTile.id.split("-")[0]);
-        let c1 = parseInt(currTile.id.split("-")[1]);
-        let r2 = parseInt(otherTile.id.split("-")[0]);
-        let c2 = parseInt(otherTile.id.split("-")[1]);
+        let r1 = parseInt(otherTile.id.split("-")[0]);
+        let c1 = parseInt(otherTile.id.split("-")[1]);
+        let r2 = parseInt(currTile.id.split("-")[0]);
+        let c2 = parseInt(currTile.id.split("-")[1]);
         for (let i=0; i<rows; i++) {
             if(board[i][c1].src.includes("Striped") || board[i][c1].src.includes("Wrapped") || board[i][c1].src.includes("choco")) {
                 explodeSpecialCandy(board[i][c1]);
@@ -191,8 +276,8 @@ function crush2(currImg, otherImg) {
     }
 
     if((currImg.includes("Striped") && otherImg.includes("Wrapped")) || (currImg.includes("Wrapped") && otherImg.includes("Striped"))) {
-        let r = parseInt(currTile.id.split("-")[0]);
-        let c = parseInt(currTile.id.split("-")[1]);
+        let r = parseInt(otherTile.id.split("-")[0]);
+        let c = parseInt(otherTile.id.split("-")[1]);
         for (let row=Math.max(0, r-1); row<=Math.min(r+1, 8); row++) {
             for(let col=0; col<cols; col++) {
                 if(board[row][col].src.includes("Striped") || board[row][col].src.includes("Wrapped") || board[row][col].src.includes("choco")) {
@@ -677,7 +762,7 @@ function checkCrush3() {
 }
 
 function getColor(src) {
-    let file = src.split("/").pop().split(".")[0]; // Blue-Striped-Vertical
+    let file = src.split("/").pop().split(".")[0]; 
     return file.split("-")[0]; // Blue
 }
 
