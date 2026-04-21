@@ -526,6 +526,17 @@ function checkCrush5_wrapped() {
             ){
                 return true;
             }
+
+            if(getColor(board[r][c+1]) == getColor(board[r+1][c+1]) &&
+                getColor(board[r][c+1]) == getColor(board[r+2][c+1]) &&
+                !board[r][c+1].src.includes("blank")){
+                    if(getColor(board[r][c+1]) == getColor(board[r][c]) && getColor(board[r][c+1]) == getColor(board[r][c+2]))
+                        return true;
+                    if(getColor(board[r][c+1]) == getColor(board[r+1][c]) && getColor(board[r][c+1]) == getColor(board[r+1][c+2]))
+                        return true;
+                    if(getColor(board[r+2][c+1]) == getColor(board[r][c]) && getColor(board[r][c+1]) == getColor(board[r+2][c+2]))
+                        return true;
+                }
         }
     }
 
@@ -685,10 +696,10 @@ function crush5_wrapped() {
                 score += 100;
             }
 
-            if(board[r][c].src == board[r+1][c].src &&
-                board[r+1][c].src == board[r+2][c].src &&
-                board[r+2][c+1].src == board[r][c].src &&
-                board[r+2][c+2].src == board[r][c].src &&
+            if(getColor(board[r][c].src) == getColor(board[r+1][c].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r+2][c].src) &&
+                getColor(board[r+2][c+1].src) == getColor(board[r][c].src) &&
+                getColor(board[r+2][c+2].src) == getColor(board[r][c].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r+2][c].src.split("/").pop().split(".")[0];
@@ -715,10 +726,10 @@ function crush5_wrapped() {
                 score += 100;
             }
 
-            if(board[r][c].src == board[r][c+1].src &&
-                board[r][c].src == board[r][c+2].src &&
-                board[r+1][c+2].src == board[r][c].src &&
-                board[r+2][c+2].src == board[r][c].src &&
+            if(getColor(board[r][c].src) == getColor(board[r][c+1].src) &&
+                getColor(board[r][c].src) == getColor(board[r][c+2].src) &&
+                getColor(board[r+1][c+2].src) == getColor(board[r][c].src) &&
+                getColor(board[r+2][c+2].src) == getColor(board[r][c].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r][c+2].src.split("/").pop().split(".")[0];
@@ -745,10 +756,10 @@ function crush5_wrapped() {
                 score += 100;
             }
 
-            if(board[r+1][c].src == board[r+1][c+1].src &&
-                board[r+1][c].src == board[r+1][c+2].src &&
-                board[r+1][c].src == board[r][c+2].src &&
-                board[r+1][c].src == board[r+2][c+2].src &&
+            if(getColor(board[r+1][c].src) == getColor(board[r+1][c+1].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r+1][c+2].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r][c+2].src) &&
+                getColor(board[r+1][c].src) == getColor(board[r+2][c+2].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r+1][c+2].src.split("/").pop().split(".")[0];
@@ -775,10 +786,10 @@ function crush5_wrapped() {
                 score += 100;
             }
 
-            if(board[r+2][c].src == board[r+2][c+1].src &&
-                board[r+2][c].src == board[r+2][c+2].src &&
-                board[r+2][c].src == board[r][c+2].src &&
-                board[r+2][c].src == board[r+1][c+2].src &&
+            if(getColor(board[r+2][c].src) == getColor(board[r+2][c+1].src) &&
+                getColor(board[r+2][c].src) == getColor(board[r+2][c+2].src) &&
+                getColor(board[r+2][c].src) == getColor(board[r][c+2].src) &&
+                getColor(board[r+2][c].src) == getColor(board[r+1][c+2].src) &&
                 !board[r][c].src.includes("blank")
             ){
                 let color = board[r+2][c+2].src.split("/").pop().split(".")[0];
@@ -804,8 +815,72 @@ function crush5_wrapped() {
                 else board[r+2][c+1].src = "./images/blank.png";
                 score += 100;
             }
+
+            if(getColor(board[r][c+1].src) == getColor(board[r+1][c+1].src) &&
+                getColor(board[r][c+1].src) == getColor(board[r+2][c+1].src) &&
+                !board[r][c+1].src.includes("blank")){
+                    let color = board[r][c+1].src.split("/").pop().split(".")[0];
+                    if(getColor(board[r][c+1].src) == getColor(board[r][c].src) && getColor(board[r][c+1].src) == getColor(board[r][c+2].src)){
+                        if(board[r][c+1].src.includes("Striped") || board[r][c+1].src.includes("Wrapped") || board[r][c+1].src.includes("choco"))
+                            explodeSpecialCandy(board[r][c+1]);
+                        else board[r][c+1].src = "./images/" + color + "-Wrapped.png";
+                        if(board[r+1][c+1].src.includes("Striped") || board[r+1][c+1].src.includes("Wrapped") || board[r+1][c+1].src.includes("choco"))
+                            explodeSpecialCandy(board[r+1][c+1]);
+                        else board[r+1][c+1].src = "./images/blank.png";
+                        if(board[r+2][c+1].src.includes("Striped") || board[r+2][c+1].src.includes("Wrapped") || board[r+2][c+1].src.includes("choco"))
+                            explodeSpecialCandy(board[r+2][c+1]);
+                        else board[r+2][c+1].src = "./images/blank.png";
+                        if(board[r][c].src.includes("Striped") || board[r][c].src.includes("Wrapped") || board[r][c].src.includes("choco"))
+                            explodeSpecialCandy(board[r][c]);
+                        else board[r][c].src = "./images/blank.png";
+                        if(board[r][c+2].src.includes("Striped") || board[r][c+2].src.includes("Wrapped") || board[r][c+2].src.includes("choco"))
+                            explodeSpecialCandy(board[r][c+2]);
+                        else board[r][c+2].src = "./images/blank.png";
+                    }
+                    if(getColor(board[r][c+1].src) == getColor(board[r+1][c].src) && getColor(board[r][c+1].src) == getColor(board[r+1][c+2].src)){
+                        if(board[r][c+1].src.includes("Striped") || board[r][c+1].src.includes("Wrapped") || board[r][c+1].src.includes("choco"))
+                            explodeSpecialCandy(board[r][c+1]);
+                        else board[r][c+1].src = "./images/blank.png";
+                        if(board[r+1][c+1].src.includes("Striped") || board[r+1][c+1].src.includes("Wrapped") || board[r+1][c+1].src.includes("choco"))
+                            explodeSpecialCandy(board[r+1][c+1]);
+                        else board[r+1][c+1].src = "./images/" + color + "-Wrapped.png";
+                        if(board[r+2][c+1].src.includes("Striped") || board[r+2][c+1].src.includes("Wrapped") || board[r+2][c+1].src.includes("choco"))
+                            explodeSpecialCandy(board[r+2][c+1]);
+                        else board[r+2][c+1].src = "./images/blank.png";
+                        if(board[r+1][c].src.includes("Striped") || board[r+1][c].src.includes("Wrapped") || board[r+1][c].src.includes("choco"))
+                            explodeSpecialCandy(board[r+1][c]);
+                        else board[r+1][c].src = "./images/blank.png";
+                        if(board[r+1][c+2].src.includes("Striped") || board[r+1][c+2].src.includes("Wrapped") || board[r+1][c+2].src.includes("choco"))
+                            explodeSpecialCandy(board[r+1][c+2]);
+                        else board[r+1][c+2].src = "./images/blank.png";
+                    }
+                    if(getColor(board[r][c+1].src) == getColor(board[r+2][c].src) && getColor(board[r][c+1].src) == getColor(board[r+2][c+2].src)){
+                        if(board[r][c+1].src.includes("Striped") || board[r][c+1].src.includes("Wrapped") || board[r][c+1].src.includes("choco"))
+                            explodeSpecialCandy(board[r][c+1]);
+                        else board[r][c+1].src = "./images/blank.png";
+                        if(board[r+1][c+1].src.includes("Striped") || board[r+1][c+1].src.includes("Wrapped") || board[r+1][c+1].src.includes("choco"))
+                            explodeSpecialCandy(board[r+1][c+1]);
+                        else board[r+1][c+1].src = "./images/blank.png";
+                        if(board[r+2][c+1].src.includes("Striped") || board[r+2][c+1].src.includes("Wrapped") || board[r+2][c+1].src.includes("choco"))
+                            explodeSpecialCandy(board[r+2][c+1]);
+                        else board[r+2][c+1].src = "./images/" + color + "-Wrapped.png";
+                        if(board[r+2][c].src.includes("Striped") || board[r+2][c].src.includes("Wrapped") || board[r+2][c].src.includes("choco"))
+                            explodeSpecialCandy(board[r+2][c]);
+                        else board[r+2][c].src = "./images/blank.png";
+                        if(board[r+2][c+2].src.includes("Striped") || board[r+2][c+2].src.includes("Wrapped") || board[r+2][c+2].src.includes("choco"))
+                            explodeSpecialCandy(board[r+2][c+2]);
+                        else board[r+2][c+2].src = "./images/blank.png";
+                    }
+                }
         }
     }
 
     return false;
 }
+
+
+/*
+r,c     r,c+1       r,c+2
+r+1,c   r+1,c+1     r+1,c+2
+r+2,c   r+2,c+1     r+2,c+2
+*/
