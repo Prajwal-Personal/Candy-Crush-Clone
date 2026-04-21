@@ -88,12 +88,15 @@ function dragEnd() {
     let currImg = currTile.src;
     let otherImg = otherTile.src;
     let isBombSwap = currImg.includes("choco") || otherImg.includes("choco");
+    let special1 = currImg.includes("Striped") || currImg.includes("Wrapped");
+    let special2 = otherImg.includes("Striped") || otherImg.includes("Wrapped");
+    let specialBomb = (currImg.includes("choco") && (otherImg.includes("Striped") || otherImg.includes("Wrapped"))) || (otherImg.includes("choco") && (currImg.includes("Striped") || currImg.includes("Wrapped")));
     currTile.src = otherImg;
     otherTile.src = currImg;
 
     let validMove = false;
 
-    if(isBombSwap) {
+    if(isBombSwap || specialBomb || (special1 && special2)) {
         crush2(currImg, otherImg);
         currTile.src = "./images/blank.png";
         otherTile.src = "./images/blank.png";
@@ -130,24 +133,85 @@ function dragEnd() {
 }
 
 function crush2(currImg, otherImg) {
-    if(!(currImg.includes("choco") || otherImg.includes("choco"))) return;
     if(currImg.includes("choco") && otherImg.includes("choco")) {
+        score += 500;
         boardReset();
         return;
     }
     let targetColor;
 
     if(currImg.includes("choco")) targetColor = otherImg;
-    else targetColor = currImg;
+    else if(otherImg.includes("choco")) targetColor = currImg;
 
-    for(let r=0; r<rows; r++) {
-        for(let c=0; c<cols; c++) {
-            if(board[r][c].src == targetColor) {
-                board[r][c].src = "./images/blank.png";
-                score += 20;
+    if(currImg.includes("choco") || otherImg.includes("choco")) {
+        for(let r=0; r<rows; r++) {
+            for(let c=0; c<cols; c++) {
+                if(board[r][c].src == targetColor) {
+                    board[r][c].src = "./images/blank.png";
+                    score += 200;
+                }
             }
         }
     }
+
+    if(currImg.includes("Wrapped") && otherImg.includes("Wrapped")){
+        let r = parseInt(currTile.id.split("-")[0]);
+        let c = parseInt(currTile.id.split("-")[1]);
+        for(let i = Math.max(0, r-2); i <= Math.min(r+2, 8); i++) {
+            for(let j = Math.max(0, c-2); j <= Math.min(c+2, 8); j++) {
+                let target = board[i][j];
+                if(target.src.includes("blank")) continue;
+                if(target.src.includes("Striped-Vertical") || target.src.includes("Striped-Horizontal") || target.src.includes("Wrapped") || target.src.includes("choco")) {
+                    explodeSpecialCandy(target);
+                } else {
+                    target.src = "./images/blank.png";
+                    score += 20;
+                }
+            }
+        }
+    }
+
+    if(currImg.includes("Striped") && otherImg.includes("Striped")){
+        let r1 = parseInt(currTile.id.split("-")[0]);
+        let c1 = parseInt(currTile.id.split("-")[1]);
+        let r2 = parseInt(otherTile.id.split("-")[0]);
+        let c2 = parseInt(otherTile.id.split("-")[1]);
+        for (let i=0; i<rows; i++) {
+            if(board[i][c1].src.includes("Striped") || board[i][c1].src.includes("Wrapped") || board[i][c1].src.includes("choco")) {
+                explodeSpecialCandy(board[i][c1]);
+            }
+            else board[i][c1].src = "./images/blank.png";
+        }
+        for(let j=0; j<cols; j++) {
+            if(board[r2][j].src.includes("Striped") || board[r2][j].src.includes("Wrapped") || board[r2][j].src.includes("choco")) {
+                explodeSpecialCandy(board[r2][j]);
+            }
+            else board[r2][j].src = "./images/blank.png";
+        }
+    }
+
+    if((currImg.includes("Striped") && otherImg.includes("Wrapped")) || (currImg.includes("Wrapped") && otherImg.includes("Striped"))) {
+        let r = parseInt(currTile.id.split("-")[0]);
+        let c = parseInt(currTile.id.split("-")[1]);
+        for (let row=Math.max(0, r-1); row<=Math.min(r+1, 8); row++) {
+            for(let col=0; col<cols; col++) {
+                if(board[row][col].src.includes("Striped") || board[row][col].src.includes("Wrapped") || board[row][col].src.includes("choco")) {
+                    explodeSpecialCandy(board[row][col]);
+                } 
+                else board[row][col].src = "./images/blank.png";
+            }
+        }
+
+        for (let col=Math.max(0, c-1); col<=Math.min(c+1, 8); col++) {
+            for(let row=0; row<rows; row++) {
+                if(board[row][col].src.includes("Striped") || board[row][col].src.includes("Wrapped") || board[row][col].src.includes("choco")) {
+                    explodeSpecialCandy(board[row][col]);
+                } 
+                else board[row][col].src = "./images/blank.png";
+            }
+        }
+    }
+
 }
 
 function boardReset() {
@@ -167,6 +231,7 @@ function crushCandy() {
 }
 
 function explodeSpecialCandy(candy) {
+    if (candy.src.includes("blank")) return;
     let coords = candy.id.split("-");
     let r = parseInt(coords[0]);
     let c = parseInt(coords[1]);
@@ -527,14 +592,14 @@ function checkCrush5_wrapped() {
                 return true;
             }
 
-            if(getColor(board[r][c+1]) == getColor(board[r+1][c+1]) &&
-                getColor(board[r][c+1]) == getColor(board[r+2][c+1]) &&
+            if(getColor(board[r][c+1].src) == getColor(board[r+1][c+1].src) &&
+                getColor(board[r][c+1].src) == getColor(board[r+2][c+1].src) &&
                 !board[r][c+1].src.includes("blank")){
-                    if(getColor(board[r][c+1]) == getColor(board[r][c]) && getColor(board[r][c+1]) == getColor(board[r][c+2]))
+                    if(getColor(board[r][c+1].src) == getColor(board[r][c].src) && getColor(board[r][c+1].src) == getColor(board[r][c+2].src))
                         return true;
-                    if(getColor(board[r][c+1]) == getColor(board[r+1][c]) && getColor(board[r][c+1]) == getColor(board[r+1][c+2]))
+                    if(getColor(board[r][c+1].src) == getColor(board[r+1][c].src) && getColor(board[r][c+1].src) == getColor(board[r+1][c+2].src))
                         return true;
-                    if(getColor(board[r+2][c+1]) == getColor(board[r][c]) && getColor(board[r][c+1]) == getColor(board[r+2][c+2]))
+                    if(getColor(board[r+2][c+1].src) == getColor(board[r][c].src) && getColor(board[r][c+1].src) == getColor(board[r+2][c+2].src))
                         return true;
                 }
         }
